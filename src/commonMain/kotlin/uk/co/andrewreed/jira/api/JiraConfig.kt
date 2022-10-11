@@ -1,8 +1,8 @@
 package uk.co.andrewreed.jira.api
 
 data class JiraConfig(
-    val username: String,
-    val password: String,
+    val username: String? = null,
+    val password: String? = null,
     val secureHost: Boolean = true,
     val host: String,
     val port: String? = null

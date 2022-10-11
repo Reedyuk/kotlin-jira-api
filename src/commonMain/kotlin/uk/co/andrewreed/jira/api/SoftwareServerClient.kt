@@ -2,11 +2,12 @@ package uk.co.andrewreed.jira.api
 
 import io.ktor.client.*
 import io.ktor.client.call.*
+import io.ktor.client.plugins.auth.*
+import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.util.*
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import uk.co.andrewreed.jira.api.models.Board
@@ -25,6 +26,18 @@ class SoftwareServerClient(private val config: JiraConfig) {
     private val ktorClient: HttpClient = HttpClient {
         install(ContentNegotiation) {
             json
+        }
+        if (!config.username.isNullOrBlank() && !config.password.isNullOrBlank()) {
+            install(Auth) {
+                basic {
+                    credentials {
+                        BasicAuthCredentials(
+                            username = config.username,
+                            password = config.password
+                        )
+                    }
+                }
+            }
         }
         expectSuccess = true
         developmentMode = true
@@ -46,7 +59,6 @@ class SoftwareServerClient(private val config: JiraConfig) {
                 method = requestMethod
                 headers {
                     append(HttpHeaders.Accept, ContentType.Application.Json)
-                    append("Authorization", "Basic "+(config.username+":"+config.password).encodeBase64())
                 }
             }.body() as String
         )
