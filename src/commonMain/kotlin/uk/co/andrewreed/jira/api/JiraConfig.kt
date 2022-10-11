@@ -8,5 +8,5 @@ data class JiraConfig(
     val port: String? = null
 ) {
     val serverUrl: String =
-        "${"https".takeIf { secureHost }}://$host${port?.let { ":$it" } ?: ""}"
+        "${"https".takeIf { secureHost } ?: "http"}://$host${port?.let { ":$it" } ?: ""}"
 }
