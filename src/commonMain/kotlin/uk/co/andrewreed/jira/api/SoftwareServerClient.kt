@@ -9,7 +9,9 @@ import io.ktor.http.*
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import uk.co.andrewreed.jira.api.models.Board
+import uk.co.andrewreed.jira.api.models.Issue
 import uk.co.andrewreed.jira.api.models.Response
+import uk.co.andrewreed.jira.api.models.ResponseIssues
 
 class SoftwareServerClient(private val config: JiraConfig) {
 
@@ -71,5 +73,11 @@ class SoftwareServerClient(private val config: JiraConfig) {
         Board.serializer(),
         "/rest/agile/1.0/board/$boardId"
     )
+
+    ///rest/agile/1.0/board/{boardId}/backlog
+    suspend fun issues(boardId: Int): List<Issue> = createAuthenticatedRequest(
+        ResponseIssues.serializer(),
+        "/rest/agile/1.0/board/$boardId/backlog"
+    ).issues
 
 }

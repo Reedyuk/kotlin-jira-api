@@ -8,11 +8,6 @@ import kotlin.test.assertTrue
 class SoftwareServerClientTests {
 
     val config = JiraConfig(
-//        username = "",
-//        password = "",
-        accessToken = "",
-//        host = ""
-        host = ""
     )
 
     @Test
@@ -27,5 +22,12 @@ class SoftwareServerClientTests {
         val board = SoftwareServerClient(config).board(1)
         println(board)
         assertEquals(1, board.id)
+    }
+
+    @Test
+    fun fetchIssuesForBacklog() = runTest {
+        val issues = SoftwareServerClient(config).issues(2)
+        println(issues)
+        assertTrue(issues.isNotEmpty())
     }
 }

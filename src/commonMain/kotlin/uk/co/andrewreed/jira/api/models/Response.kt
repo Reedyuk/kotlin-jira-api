@@ -11,3 +11,11 @@ data class Response(
     val values: JsonArray
 )
 
+@Serializable
+data class ResponseIssues(
+    val startAt: Int,
+    val maxResults: Int,
+    val total: Int,
+    val issues: List<Issue>
+)
+
