@@ -8,8 +8,10 @@ import kotlin.test.assertTrue
 class SoftwareServerClientTests {
 
     val config = JiraConfig(
-        username = "",
-        password = "",
+//        username = "",
+//        password = "",
+        accessToken = "",
+//        host = ""
         host = ""
     )
 

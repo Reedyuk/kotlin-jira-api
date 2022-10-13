@@ -2,8 +2,6 @@ package uk.co.andrewreed.jira.api
 
 import io.ktor.client.*
 import io.ktor.client.call.*
-import io.ktor.client.plugins.auth.*
-import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
@@ -27,18 +25,6 @@ class SoftwareServerClient(private val config: JiraConfig) {
         install(ContentNegotiation) {
             json
         }
-        if (!config.username.isNullOrBlank() && !config.password.isNullOrBlank()) {
-            install(Auth) {
-                basic {
-                    credentials {
-                        BasicAuthCredentials(
-                            username = config.username,
-                            password = config.password
-                        )
-                    }
-                }
-            }
-        }
         expectSuccess = true
         developmentMode = true
         install(Logging) {
@@ -59,6 +45,7 @@ class SoftwareServerClient(private val config: JiraConfig) {
                 method = requestMethod
                 headers {
                     append(HttpHeaders.Accept, ContentType.Application.Json)
+                    append(HttpHeaders.Authorization, config.token)
                 }
             }.body() as String
         )
