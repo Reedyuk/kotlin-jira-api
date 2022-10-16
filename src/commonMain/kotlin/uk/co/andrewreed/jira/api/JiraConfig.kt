@@ -8,7 +8,9 @@ data class JiraConfig(
     val accessToken: String? = null,
     val secureHost: Boolean = true,
     val host: String,
-    val port: String? = null
+    val port: String? = null,
+    val developmentMode: Boolean = false,
+    val showLogging: Boolean = false
 ) {
     val token: String = accessToken?.let { "Bearer $it" } ?:
         "Basic ${("${username!!}:${password!!}".encodeBase64())}"

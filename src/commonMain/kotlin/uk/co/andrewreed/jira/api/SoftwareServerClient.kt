@@ -28,10 +28,12 @@ class SoftwareServerClient(private val config: JiraConfig) {
             json
         }
         expectSuccess = true
-        developmentMode = true
-        install(Logging) {
-            logger = Logger.DEFAULT
-            level = LogLevel.ALL
+        developmentMode = config.developmentMode
+        if (config.showLogging) {
+            install(Logging) {
+                logger = Logger.SIMPLE
+                level = LogLevel.ALL
+            }
         }
     }
 

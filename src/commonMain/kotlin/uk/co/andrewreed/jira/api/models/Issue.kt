@@ -15,14 +15,14 @@ data class Issue(
 data class Fields(
     val flagged: Boolean,
     val sprint: Sprint?,
-//    val closedSprints: List<ClosedSprint>,
-//    val description: String,
+    val closedSprints: List<ClosedSprint> = emptyList(),
+    val description: String?,
     val project: Project,
-//    val comment: List<Comment>,
-//    val epic: Epic,
-//    val worklog: List<Log>,
-//    val updated: Int,
-//    val timetracking: TimeTracking
+    val comment: Comments,
+    val epic: Epic? = null,
+    val worklog: Logs,
+    val updated: String,
+    val timetracking: TimeTracking
 )
 
 @Serializable
@@ -51,7 +51,7 @@ data class Project(
     val key: String,
     val name: String,
     val avatarUrls: AvatarUrls,
-    //val projectCategory: ProjectCategory?
+    val projectCategory: ProjectCategory? = null
 )
 
 @Serializable
@@ -75,6 +75,11 @@ data class ProjectCategory(
 )
 
 @Serializable
+data class Comments(
+    val comments: List<Comment>
+)
+
+@Serializable
 data class Comment(
     val id: String,
     val self: String,
@@ -83,13 +88,13 @@ data class Comment(
     val updateAuthor: Author,
     val created: String,
     val updated: String,
-    val visibility: Visibility
+    val visibility: Visibility? = null
 )
 
 @Serializable
 data class Author(
     val self: String,
-    val name: String,
+    val accountId: String,
     val displayName: String,
     val active: Boolean
 )
@@ -116,13 +121,21 @@ data class Color(
 )
 
 @Serializable
+data class Logs(
+    val startAt: Int,
+    val maxResults: Int,
+    val total: Int,
+    val worklogs: List<Log>
+)
+
+@Serializable
 data class Log(
     val self: String,
     val author: Author,
     val updateAuthor: Author,
     val comment: String,
     val updated: String,
-    val visibility: Visibility,
+    val visibility: Visibility? = null,
     val started: String,
     val timeSpent: String,
     val timeSpentSeconds: Int,
@@ -132,10 +145,10 @@ data class Log(
 
 @Serializable
 data class TimeTracking(
-    val originalEstimate: String,
-    val remainingEstimate: String,
-    val timeSpent: String,
-    val originalEstimateSeconds: Int,
-    val remainingEstimateSeconds: Int,
-    val timeSpentSeconds: Int
+    val originalEstimate: String? = null,
+    val remainingEstimate: String? = null,
+    val timeSpent: String? = null,
+    val originalEstimateSeconds: Int? = null,
+    val remainingEstimateSeconds: Int? = null,
+    val timeSpentSeconds: Int? = null
 )
