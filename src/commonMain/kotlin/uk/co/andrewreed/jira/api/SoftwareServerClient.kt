@@ -54,21 +54,14 @@ class SoftwareServerClient(private val config: JiraConfig) {
             }.body() as String
         )
 
-    private suspend fun <T>createAuthenticatedRequestList(
-        deserializer: KSerializer<T>,
-        path: String,
-        requestMethod: HttpMethod = HttpMethod.Get
-    ): List<T> = createAuthenticatedRequest(Response.serializer(), path, requestMethod)
-        .createListValues(deserializer)
-
     private fun <T>Response.createListValues(
         deserializer: KSerializer<T>
     ): List<T> = values.map { json.decodeFromJsonElement(deserializer, it) }
 
-    suspend fun boards(): List<Board> = createAuthenticatedRequestList(
-        Board.serializer(),
+    suspend fun boards(): List<Board> = createAuthenticatedRequest(
+        Response.serializer(),
         "/rest/agile/1.0/board"
-    )
+    ).createListValues(Board.serializer())
 
     //rest/agile/1.0/board/{boardId}
     suspend fun board(boardId: Int): Board = createAuthenticatedRequest(
@@ -77,7 +70,7 @@ class SoftwareServerClient(private val config: JiraConfig) {
     )
 
     ///rest/agile/1.0/board/{boardId}/backlog
-    suspend fun issues(boardId: Int): List<Issue> = createAuthenticatedRequest(
+    suspend fun backlog(boardId: Int): List<Issue> = createAuthenticatedRequest(
         ResponseIssues.serializer(),
         "/rest/agile/1.0/board/$boardId/backlog"
     ).issues

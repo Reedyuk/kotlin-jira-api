@@ -3,9 +3,9 @@ package uk.co.andrewreed.jira.api.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Issue(
-    val id: String,
+data class Sprint(
+    val id: Int,
     val self: String,
-    val key: String,
-    val fields: Fields
+    val state: String,
+    val name: String
 )

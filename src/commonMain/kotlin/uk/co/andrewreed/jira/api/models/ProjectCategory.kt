@@ -3,9 +3,9 @@ package uk.co.andrewreed.jira.api.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Issue(
+data class ProjectCategory(
     val id: String,
     val self: String,
-    val key: String,
-    val fields: Fields
+    val name: String,
+    val description: String
 )
