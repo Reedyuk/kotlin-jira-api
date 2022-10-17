@@ -8,10 +8,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
-import uk.co.andrewreed.jira.api.models.Board
-import uk.co.andrewreed.jira.api.models.Issue
-import uk.co.andrewreed.jira.api.models.Response
-import uk.co.andrewreed.jira.api.models.ResponseIssues
+import uk.co.andrewreed.jira.api.models.*
 
 class SoftwareServerClient(private val config: JiraConfig) {
 
@@ -75,4 +72,39 @@ class SoftwareServerClient(private val config: JiraConfig) {
         "/rest/agile/1.0/board/$boardId/backlog"
     ).issues
 
+    ///rest/agile/1.0/board/{boardId}/issue
+    suspend fun issues(boardId: Int): List<Issue> = createAuthenticatedRequest(
+        ResponseIssues.serializer(),
+        "/rest/agile/1.0/board/$boardId/issue"
+    ).issues
+
+    ///rest/agile/1.0/board/{boardId}/epic
+    suspend fun epics(boardId: Int): List<Epic> = createAuthenticatedRequest(
+        Response.serializer(),
+        "/rest/agile/1.0/board/$boardId/epic"
+    ).createListValues(Epic.serializer())
+
+    ///rest/agile/1.0/board/{boardId}/epic/{epicId}/issue
+    suspend fun epicIssues(boardId: Int, epicId: Int): List<Issue> = createAuthenticatedRequest(
+        ResponseIssues.serializer(),
+        "/rest/agile/1.0/board/$boardId/epic/$epicId/issue"
+    ).issues
+
+    ///rest/agile/1.0/board/{boardId}/epic/none/issue
+    suspend fun epicNoneIssues(boardId: Int): List<Issue> = createAuthenticatedRequest(
+        ResponseIssues.serializer(),
+        "/rest/agile/1.0/board/$boardId/epic/none/issue"
+    ).issues
+
+    ///rest/agile/1.0/board/{boardId}/project
+    suspend fun projects(boardId: Int): List<Project> = createAuthenticatedRequest(
+        Response.serializer(),
+        "/rest/agile/1.0/board/$boardId/project"
+    ).createListValues(Project.serializer())
+
+    ///rest/agile/1.0/board/{boardId}/sprint
+    suspend fun sprints(boardId: Int): List<Sprint> = createAuthenticatedRequest(
+        Response.serializer(),
+        "/rest/agile/1.0/board/$boardId/sprint"
+    ).createListValues(Sprint.serializer())
 }

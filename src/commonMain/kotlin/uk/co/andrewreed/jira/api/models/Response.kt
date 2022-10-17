@@ -7,7 +7,7 @@ import kotlinx.serialization.json.JsonArray
 data class Response(
     val startAt: Int,
     val maxResults: Int,
-    val total: Int,
+    val total: Int? = null,
     val values: JsonArray
 )
 
