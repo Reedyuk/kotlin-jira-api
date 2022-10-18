@@ -14,7 +14,7 @@ The library works on the following platforms: Android, iOS, JavaScript, JVM.
 
 When accessing the Jira api using basic authentication, you will need to set the following
 
-```aidl
+```kotlin
     JiraConfig(
         username = "jiraUsernameEmail",
         password = "jiraPassword",
@@ -26,7 +26,7 @@ When accessing the Jira api using basic authentication, you will need to set the
 
 When accessing the Jira api using OAuth, you will need to set the following
 
-```aidl
+```kotlin
     JiraConfig(
         accessToken = "ACCESSTokenFromOAuth",
         host = "api.atlassian.com/ex/jira/CLOUDID"
@@ -36,3 +36,23 @@ When accessing the Jira api using OAuth, you will need to set the following
 If you follow this guide: https://developer.atlassian.com/cloud/jira/platform/oauth-2-3lo-apps/
 
 Then you will get an access token and a jira cloudId, you will need to set those in the jira config.
+
+### Client
+
+Once you have a JiraConfig object, then you need to create the client
+
+```kotlin
+val client = JiraClient(config)
+```
+
+Then you can call the relevant endpoints.
+
+```kotlin
+client.sprint.sprint(1)
+client.board.board(1)
+client.issue.issue(1)
+client.epic.epic(1)
+client.project.projects(1)
+```
+
+Each service can be accessed from the client and then you can perform the relevant request, e.g. .issue.issues()

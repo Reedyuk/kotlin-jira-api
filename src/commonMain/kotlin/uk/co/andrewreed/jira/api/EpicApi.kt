@@ -1,5 +1,7 @@
 package uk.co.andrewreed.jira.api
 
+import io.ktor.http.*
+import kotlinx.serialization.builtins.serializer
 import uk.co.andrewreed.jira.api.models.Epic
 import uk.co.andrewreed.jira.api.models.Response
 
@@ -17,4 +19,9 @@ class EpicApi(config: JiraConfig): Client(config) {
         "/rest/agile/1.0/board/$boardId/epic"
     ).createListValues(Epic.serializer())
 
+    suspend fun deleteEpic(epicIdOrKey: Int) = createAuthenticatedRequest(
+        Unit.serializer(),
+        "/rest/api/2/issue/$epicIdOrKey",
+        HttpMethod.Delete
+    )
 }
