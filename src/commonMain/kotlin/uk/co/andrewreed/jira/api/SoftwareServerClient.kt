@@ -107,4 +107,28 @@ class SoftwareServerClient(private val config: JiraConfig) {
         Response.serializer(),
         "/rest/agile/1.0/board/$boardId/sprint"
     ).createListValues(Sprint.serializer())
+
+    ///rest/agile/1.0/board/{boardId}/sprint/{sprintId}/issue
+    suspend fun issuesForSprint(boardId: Int, sprintId: Int): List<Issue> = createAuthenticatedRequest(
+        ResponseIssues.serializer(),
+        "/rest/agile/1.0/board/$boardId/sprint/$sprintId/issue"
+    ).issues
+
+    ///rest/agile/1.0/epic/{epicIdOrKey}
+    suspend fun epic(epicIdOrKey: Int): Epic = createAuthenticatedRequest(
+        Epic.serializer(),
+        "/rest/agile/1.0/epic/$epicIdOrKey"
+    )
+
+    ///rest/agile/1.0/issue/{issueIdOrKey}
+    suspend fun issue(issueIdOrKey: String): Issue = createAuthenticatedRequest(
+        Issue.serializer(),
+        "/rest/agile/1.0/issue/$issueIdOrKey"
+    )
+
+    ///rest/agile/1.0/sprint/{sprintId}
+    suspend fun sprint(sprintId: Int): Sprint = createAuthenticatedRequest(
+        Sprint.serializer(),
+        "/rest/agile/1.0/sprint/$sprintId"
+    )
 }

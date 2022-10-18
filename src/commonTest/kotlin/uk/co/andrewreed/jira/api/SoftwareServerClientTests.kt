@@ -74,4 +74,35 @@ class SoftwareServerClientTests {
         println(sprints)
         assertTrue(sprints.isNotEmpty())
     }
+
+    @Test
+    fun fetchIssuesForSprint() = runTest {
+        val issues = SoftwareServerClient(config).issuesForSprint(71, 167)
+        println(issues)
+        assertTrue(issues.isNotEmpty())
+    }
+
+    @Test
+    fun fetchEpic() = runTest {
+        val epicId = 48106
+        val epic = SoftwareServerClient(config).epic(epicId)
+        println(epic)
+        assertEquals(epicId, epic.id)
+    }
+
+    @Test
+    fun fetchIssue() = runTest {
+        val issueId = "49386"
+        val issue = SoftwareServerClient(config).issue(issueId)
+        println(issue)
+        assertEquals(issueId, issue.id)
+    }
+
+    @Test
+    fun fetchSprint() = runTest {
+        val sprintId = 167
+        val sprint = SoftwareServerClient(config).sprint(sprintId)
+        println(sprint)
+        assertEquals(sprintId, sprint.id)
+    }
 }
