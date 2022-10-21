@@ -1,18 +1,36 @@
+import java.util.*
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     `maven-publish`
+    id("signing")
+}
+
+repositories {
+    google()
+    mavenCentral()
+    google()
+    maven("https://jitpack.io")
+    mavenLocal()
 }
 
 val project_version: String by project
 
-group = "uk.co.andrewreed"
-version = project_version
+//expose properties
+val sonatypeStaging = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+val sonatypeSnapshots = "https://oss.sonatype.org/content/repositories/snapshots/"
 
-val ktor_version: String by project
-val kotlinx_coroutines_version: String by project
-val kermit_version: String by project
+val local = Properties()
+val localProperties: File = rootProject.file("local.properties")
+if (localProperties.exists()) {
+    localProperties.inputStream().use { local.load(it) }
+}
+
+val sonatypePasswordEnv = System.getenv("sonatypePasswordEnv")
+val sonatypeUsernameEnv = System.getenv("sonatypeUsernameEnv")
 
 val projectGithubUrl: String by project
 val projectGithubSCM: String by project
@@ -22,6 +40,13 @@ val projectDescription: String by project
 val developerId: String by project
 val developerName: String by project
 val developerEmail: String by project
+val group: String by project
+
+version = project_version
+
+val ktor_version: String by project
+val kotlinx_coroutines_version: String by project
+val kermit_version: String by project
 
 repositories {
     mavenCentral()
@@ -98,14 +123,22 @@ kotlin {
     }
 }
 
+fun SigningExtension.whenRequired(block: () -> Boolean) {
+    setRequired(block)
+}
+
+val javadocJar by tasks.creating(Jar::class) {
+    archiveClassifier.value("javadoc")
+}
+
 publishing {
     repositories {
         maven {
-            name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/reedyuk/kotlin-jira-api")
+            url = uri(sonatypeStaging)
+
             credentials {
-                username = System.getenv("GITHUB_ACTOR")
-                password = System.getenv("GITHUB_TOKEN")
+                username = sonatypeUsernameEnv
+                password = sonatypePasswordEnv
             }
         }
     }
@@ -113,8 +146,11 @@ publishing {
     publications.all {
         this as MavenPublication
 
+        println(name)
+        artifact(javadocJar)
+
         pom {
-            name.set(group as String)
+            name.set(group)
             description.set(projectDescription)
             url.set(projectGithubUrl)
 
@@ -138,8 +174,17 @@ publishing {
                 connection.set(projectGithubSCM)
                 developerConnection.set(projectGithubSCMSSL)
             }
+
         }
     }
+}
+
+signing {
+    whenRequired { gradle.taskGraph.hasTask("publish") }
+    val signingKey: String? by project
+    val signingPassword: String? by project
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications)
 }
 
 ktlint {
