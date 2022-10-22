@@ -71,25 +71,25 @@ kotlin {
             }
         }
     }
-    val xcf = XCFramework(frameworkName)
-    iosArm64("ios") {
-        binaries.framework {
-            baseName = frameworkName
-            xcf.add(this)
-        }
-    }
-    iosX64 {
-        binaries.framework {
-            baseName = frameworkName
-            xcf.add(this)
-        }
-    }
-    iosSimulatorArm64 {
-        binaries.framework {
-            baseName = frameworkName
-            xcf.add(this)
-        }
-    }
+//    val xcf = XCFramework(frameworkName)
+//    iosArm64("ios") {
+//        binaries.framework {
+//            baseName = frameworkName
+//            xcf.add(this)
+//        }
+//    }
+//    iosX64 {
+//        binaries.framework {
+//            baseName = frameworkName
+//            xcf.add(this)
+//        }
+//    }
+//    iosSimulatorArm64 {
+//        binaries.framework {
+//            baseName = frameworkName
+//            xcf.add(this)
+//        }
+//    }
 
     sourceSets {
         val commonMain by getting {
@@ -120,19 +120,19 @@ kotlin {
             }
         }
         val jsTest by getting
-        val iosMain by getting {
-            dependencies {
-                implementation("io.ktor:ktor-client-darwin:$ktor_version")
-            }
-        }
-        val iosTest by getting
-        val iosSimulatorArm64Main by getting
-        iosSimulatorArm64Main.dependsOn(iosMain)
-        val iosX64Main by getting
-        iosX64Main.dependsOn(iosMain)
-
-        val iosSimulatorArm64Test by getting
-        iosSimulatorArm64Test.dependsOn(iosTest)
+//        val iosMain by getting {
+//            dependencies {
+//                implementation("io.ktor:ktor-client-darwin:$ktor_version")
+//            }
+//        }
+//        val iosTest by getting
+//        val iosSimulatorArm64Main by getting
+//        iosSimulatorArm64Main.dependsOn(iosMain)
+//        val iosX64Main by getting
+//        iosX64Main.dependsOn(iosMain)
+//
+//        val iosSimulatorArm64Test by getting
+//        iosSimulatorArm64Test.dependsOn(iosTest)
     }
 }
 
