@@ -6,6 +6,7 @@ plugins {
     kotlin("plugin.serialization")
     id("org.jlleitschuh.gradle.ktlint") version "10.0.0"
     `maven-publish`
+    id("signing")
 }
 
 repositories {
@@ -122,6 +123,10 @@ kotlin {
     }
 }
 
+fun SigningExtension.whenRequired(block: () -> Boolean) {
+    setRequired(block)
+}
+
 val javadocJar by tasks.creating(Jar::class) {
     archiveClassifier.value("javadoc")
 }
@@ -172,6 +177,14 @@ publishing {
 
         }
     }
+}
+
+signing {
+    whenRequired { gradle.taskGraph.hasTask("publish") }
+    val signingKey: String? by project
+    val signingPassword: String? by project
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign(publishing.publications)
 }
 
 ktlint {
