@@ -52,6 +52,8 @@ repositories {
     mavenCentral()
 }
 
+val frameworkName = "Jira"
+
 kotlin {
     jvm {
         compilations.all {
@@ -69,14 +71,23 @@ kotlin {
             }
         }
     }
-    ios("ios") {
+    val xcf = XCFramework(frameworkName)
+    iosArm64("ios") {
         binaries.framework {
-            baseName = "kotlin-jira-api"
+            baseName = frameworkName
+            xcf.add(this)
+        }
+    }
+    iosX64 {
+        binaries.framework {
+            baseName = frameworkName
+            xcf.add(this)
         }
     }
     iosSimulatorArm64 {
         binaries.framework {
-            baseName = "kotlin-jira-api"
+            baseName = frameworkName
+            xcf.add(this)
         }
     }
 
@@ -117,6 +128,8 @@ kotlin {
         val iosTest by getting
         val iosSimulatorArm64Main by getting
         iosSimulatorArm64Main.dependsOn(iosMain)
+        val iosX64Main by getting
+        iosX64Main.dependsOn(iosMain)
 
         val iosSimulatorArm64Test by getting
         iosSimulatorArm64Test.dependsOn(iosTest)
