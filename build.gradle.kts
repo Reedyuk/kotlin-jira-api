@@ -20,8 +20,8 @@ repositories {
 val project_version: String by project
 
 //expose properties
-val sonatypeStaging = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-val sonatypeSnapshots = "https://oss.sonatype.org/content/repositories/snapshots/"
+val sonatypeStaging = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+val sonatypeSnapshots = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
 
 val local = Properties()
 val localProperties: File = rootProject.file("local.properties")
