@@ -1,4 +1,4 @@
-# Kotlin-Jira-API
+# Kotlin-Jira-API ![CI](https://github.com/Reedyuk/kotlin-jira-api/actions/workflows/release.yml/badge.svg) [![Kotlin](https://img.shields.io/badge/kotlin-1.7.10-blue.svg)](http://kotlinlang.org) ![badge][badge-android] ![badge][badge-native] ![badge][badge-jvm] ![badge][badge-js]
 
 A Kotlin Multiplatform implementation of the Jira API
 
@@ -9,6 +9,14 @@ https://docs.atlassian.com/jira-software/REST/7.3.1/#agile/1.0/board-getAllBoard
 The library works on the following platforms: Android, iOS, JavaScript, JVM.
 
 ## Installation
+
+Add the package to your build gradle
+
+```kotlin
+implementation 'uk.co.andrewreed:kotlin-jira-api:0.0.1'
+```
+
+and you should be able to import it into your project.
 
 ## Usage
 
@@ -58,3 +66,8 @@ client.project.projects(1)
 ```
 
 Each service can be accessed from the client and then you can perform the relevant request, e.g. .issue.issues()
+
+[badge-android]: http://img.shields.io/badge/platform-android-brightgreen.svg?style=flat
+[badge-native]: http://img.shields.io/badge/platform-native-lightgrey.svg?style=flat
+[badge-js]: http://img.shields.io/badge/platform-js-yellow.svg?style=flat
+[badge-jvm]: http://img.shields.io/badge/platform-jvm-lightgrey.svg?style=flat
